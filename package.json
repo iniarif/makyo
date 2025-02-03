@@ -3,8 +3,8 @@
   "private": false,
   "version": "1.0.2",
   "type": "module",
-  "main": "src/components/Dropdown/Dropdown.jsx",
-  "module": "src/components/Dropdown/Dropdown.jsx",
+  "main": "src/components/Dropdown/index.js",
+  "module": "src/components/Dropdown/index.js",
   "files": [
     "src/components/Dropdown"
   ],
