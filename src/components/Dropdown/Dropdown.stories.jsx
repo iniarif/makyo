@@ -26,13 +26,13 @@ export default {
 };
 
 export const SelectDropdownField = {
-  args: {
-    id: "sdd-1",
-    withSearch: true,
-    multiple: false,
-    outlined: false,
-    optionLabel: "label",
-    options: [
+  args:{
+    id:"sdd-1",
+    withSearch:false,
+    multiple:false,
+    outlined:false,
+    optionLabel:"label",
+    options:[
       { label: "Option 1", value: "1" },
       { label: "Option with icon", value: "2" },
       { label: "Long Long Option 3", value: "3" },
@@ -40,6 +40,6 @@ export const SelectDropdownField = {
       { label: "Long Long Long Long Option 5", value: "5" },
       { label: "Long Long Long Long Long Option 6", value: "6" },
     ],
-    customRender: false,
+    customRender:false,
   },
 };
