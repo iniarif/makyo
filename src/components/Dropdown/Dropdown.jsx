@@ -26,30 +26,35 @@ const Dropdown = ({ options = [], multiple = false, searchable = true, customRen
       <div className="relative w-full mt-1">
         <Combobox value={selected} onChange={setSelected} multiple={multiple}>
           <div className="relative flex items-center w-full p-2 bg-white border rounded-md cursor-pointer" ref={reference} onClick={() => setOpen(!open)}>
+            {/* Tampilan input utama (selalu menampilkan input untuk pencarian) */}
             <div className="flex flex-wrap items-center flex-1 gap-1">
-              {multiple ? (
-                <div className="flex flex-wrap items-center flex-1 gap-1">
-                  {selected.length > 0 &&
-                    selected.map((s) => (
-                      <div key={s.value} className="flex items-center px-2 py-1 text-sm bg-gray-100 border border-gray-300 rounded-full">
-                        <span className="mr-1">{s.label}</span>
-                        <button className="text-gray-600 hover:text-gray-900" onClick={(e) => removeItem(e, s.value)}>
-                          ✕
-                        </button>
-                      </div>
-                    ))}
-                  <input type="text" className="border-none outline-none flex-1 min-w-[50px]" value={query} onChange={(e) => setQuery(e.target.value)} placeholder={selected.length === 0 ? "Select options..." : ""} />
-                </div>
-              ) : selected ? (
+              {multiple &&
+                selected.length > 0 &&
+                selected.map((s) => (
+                  <div key={s.value} className="flex items-center px-2 py-1 text-sm bg-gray-100 border border-gray-300 rounded-full">
+                    <span className="mr-1">{s.label}</span>
+                    <button className="text-gray-600 hover:text-gray-900" onClick={(e) => removeItem(e, s.value)}>
+                      ✕
+                    </button>
+                  </div>
+                ))}
+
+              {!multiple && selected && (
                 <div className="flex items-center px-2 py-1 text-sm bg-gray-100 border border-gray-300 rounded-full">
                   <span className="mr-1">{selected.label}</span>
                   <button className="text-gray-600 hover:text-gray-900" onClick={clearSelection}>
                     ✕
                   </button>
                 </div>
-              ) : (
-                <span className="text-gray-400">Select option...</span>
               )}
+
+              <input
+                type="text"
+                className="border-none outline-none flex-1 min-w-[50px]"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder={multiple ? (selected.length === 0 ? "Select options..." : "") : selected ? "" : "Select option..."}
+              />
             </div>
             <HiOutlineChevronDown className={classNames("text-gray-500 transition-transform", open ? "rotate-180" : "")} />
           </div>

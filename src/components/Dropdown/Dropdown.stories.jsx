@@ -3,28 +3,101 @@ import Dropdown from "../Dropdown";
 export default {
   title: "Components/Dropdown",
   component: Dropdown,
+  argTypes: {
+    id: {
+      control: "text",
+      defaultValue: "sdd-1",
+    },
+    withSearch: {
+      control: "boolean",
+      defaultValue: true,
+    },
+    multiple: {
+      control: "boolean",
+      defaultValue: false,
+    },
+    outlined: {
+      control: "boolean",
+      defaultValue: false,
+    },
+    optionLabel: {
+      control: "text",
+      defaultValue: "label",
+    },
+    onChange: {
+      action: "changed",
+    },
+    options: {
+      control: "object",
+      defaultValue: [
+        { label: "Option 1", value: "1" },
+        { label: "Option with icon", value: "2" },
+        { label: "Long Long Option 3", value: "3" },
+        { label: "Long Long Long Option 4", value: "4" },
+      ],
+    },
+  },
 };
 
-const options = [
-  { label: "Option 1", value: "1" },
-  { label: "Option with icon", value: "2" },
-  { label: "Long Long Option 3", value: "3" },
-  { label: "Long Long Long Option 4", value: "4" },
-  // dan seterusnya...
-];
+// ✅ Default Story (CSF3)
+export const Default = {
+  args: {
+    id: "sdd-1",
+    withSearch: true,
+    multiple: false,
+    outlined: false,
+    optionLabel: "label",
+    options: [
+      { label: "Option 1", value: "1" },
+      { label: "Option with icon", value: "2" },
+      { label: "Long Long Option 3", value: "3" },
+      { label: "Long Long Long Option 4", value: "4" },
+    ],
+  },
+};
 
-export const Default = () => <Dropdown options={options} />;
+// ✅ Multiple Selection
+export const MultipleSelection = {
+  args:{
+    id:"sdd-2",
+    withSearch:true,
+    multiple:false,
+    options:[
+      { label: "Option 1", value: "1" },
+      { label: "Option with icon", value: "2" },
+      { label: "Long Long Option 3", value: "3" },
+      { label: "Long Long Long Option 4", value: "4" },
+    ],
+  },
+};
 
-export const MultipleSelection = () => <Dropdown multiple options={options} />;
+// ✅ Searchable Dropdown
+export const Searchable = {
+  args: {
+    id: "sdd-3",
+    withSearch: true,
+    options: [
+      { label: "Option 1", value: "1" },
+      { label: "Option with icon", value: "2" },
+      { label: "Long Long Option 3", value: "3" },
+      { label: "Long Long Long Option 4", value: "4" },
+    ],
+  },
+};
 
-export const Searchable = () => <Dropdown searchable options={options} />;
-
-export const CustomRender = () => (
-  <Dropdown
-    options={options}
-    customRender={(option) => (
+// ✅ Custom Render untuk Highlight Kata "Long"
+export const CustomRender = {
+  args: {
+    id: "sdd-4",
+    withSearch: true,
+    options: [
+      { label: "Option 1", value: "1" },
+      { label: "Option with icon", value: "2" },
+      { label: "Long Long Option 3", value: "3" },
+      { label: "Long Long Long Option 4", value: "4" },
+    ],
+    customRender: (option) => (
       <span className="flex items-center gap-1">
-        {/* Contoh highlight kata “Long” dengan background hijau */}
         {option.label.split(/(Long)/gi).map((part, idx) =>
           part.toLowerCase() === "long" ? (
             <span key={idx} className="px-1 bg-green-200 rounded">
@@ -35,6 +108,6 @@ export const CustomRender = () => (
           )
         )}
       </span>
-    )}
-  />
-);
+    ),
+  },
+};
