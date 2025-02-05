@@ -3,128 +3,117 @@ import { Combobox } from "@headlessui/react";
 import { useDropdown } from "./hooks/useDropdown";
 import DropdownOption from "./DropdownOption";
 import classNames from "classnames";
-import { HiOutlineChevronDown, HiOutlineSearch, HiX } from "react-icons/hi";
+import { HiOutlineChevronDown, HiX } from "react-icons/hi";
 
 const Dropdown = ({ options = [], multiple = false, searchable = true, customRender, onChange, portal = false, className = "", label = "Label", outlined = false }) => {
-  const {
-    selected,
-    setSelected,
-    query,
-    setQuery,
-    // Meskipun useDropdown menghasilkan filteredOptions, kita tidak menggunakannya
-    open,
-    setOpen,
-    floating,
-    reference,
-    style,
-  } = useDropdown({ options, multiple, onChange });
+  const { selected, setSelected, query, setQuery, open, setOpen, floating, reference, style } = useDropdown({ options, multiple, onChange });
 
-  // Pastikan selected tidak null
+  // Pastikan nilai selected tidak null
   const selectedItems = multiple ? selected || [] : selected;
 
-  // Fungsi untuk menghapus salah satu item (untuk multiple)
+  // Hapus item pilihan (untuk multiple)
   const removeItem = (e, itemValue) => {
     e.stopPropagation();
-    const newSelected = selectedItems.filter((s) => s.value !== itemValue);
-    setSelected(newSelected);
+    if (multiple) {
+      const newSelected = selectedItems.filter((s) => s.value !== itemValue);
+      setSelected(newSelected);
+    }
   };
 
-  // Fungsi untuk menghapus seluruh item (untuk single selection)
+  // Hapus pilihan (untuk single/multiple)
   const clearSelection = (e) => {
     e.stopPropagation();
     setSelected(multiple ? [] : null);
   };
 
-  // Fungsi untuk menangani pilihan dropdown
+  // Tangani pemilihan opsi
   const handleSelect = (value) => {
     if (multiple) {
       setSelected([...selectedItems, value]);
     } else {
       setSelected(value);
-      setOpen(false); // Menutup dropdown setelah memilih opsi
+      setOpen(false);
     }
   };
 
-  // Selalu tampilkan seluruh opsi, tanpa filtering
+  // Selalu tampilkan seluruh opsi (tanpa filtering)
   const optionsToDisplay = options;
 
   return (
     <div className={classNames("w-full", className)}>
       <Combobox value={selected} onChange={handleSelect} multiple={multiple}>
-        {/* Baris utama: Label dan combobox utama */}
+        {/* Baris utama: Label dan Combobox */}
         <div className="flex items-center gap-4">
-          <label className="w-1/4 text-sm font-medium text-gray-700">{label}</label>
+          <label className="w-1/4 text-xs font-medium text-gray-700">{label}</label>
           <div className="w-3/4" ref={reference}>
-            <div className={classNames("flex items-center w-full p-2 bg-white border rounded-md cursor-pointer", outlined ? "border-2" : "")} onClick={() => setOpen(!open)}>
-              <div className="flex flex-wrap items-center flex-1 gap-1">
-                {multiple &&
+            <div className="flex items-center w-full p-1 border border-gray-200 rounded cursor-pointer" onClick={() => setOpen(!open)}>
+              <div className="flex flex-wrap gap-1">
+                {multiple ? (
                   selectedItems.length > 0 &&
-                  selectedItems.map((s) => (
-                    <div key={s.value} className="flex items-center px-2 py-1 text-sm bg-gray-100 border border-gray-300 rounded-full">
-                      <span className="mr-1">{s.label}</span>
-                      <button className="text-gray-600 hover:text-gray-900" onClick={(e) => removeItem(e, s.value)}>
-                        ✕
+                  selectedItems.map((item) => (
+                    <span key={item.value} className="inline-flex items-center bg-gray-100 text-xs text-gray-700 rounded-full px-2 py-0.5">
+                      {item.label}
+                      <button onClick={(e) => removeItem(e, item.value)} className="flex items-center justify-center p-1 ml-1 border border-gray-300 rounded-full">
+                        <HiX className="w-3 h-3" />
                       </button>
-                    </div>
-                  ))}
-                {!multiple && selectedItems && (
-                  <div className="flex items-center px-2 py-1 text-sm bg-gray-100 border border-gray-300 rounded-full">
-                    <span className="mr-1">{selectedItems.label}</span>
-                    <button className="text-gray-600 hover:text-gray-900" onClick={clearSelection}>
-                      ✕
+                    </span>
+                  ))
+                ) : selectedItems ? (
+                  <span className="inline-flex items-center bg-gray-100 text-xs text-gray-700 rounded-full px-2 py-0.5">
+                    {selectedItems.label}
+                    <button onClick={clearSelection} className="flex items-center justify-center p-1 ml-1 border border-gray-300 rounded-full">
+                      <HiX className="w-3 h-3" />
                     </button>
-                  </div>
-                )}
+                  </span>
+                ) : null}
               </div>
-              <HiOutlineChevronDown className={classNames("text-gray-500 transition-transform", open ? "rotate-180" : "")} />
+              <HiOutlineChevronDown className="w-3 h-3 ml-auto text-gray-500" />
             </div>
           </div>
         </div>
 
-        {/* Bagian input pencarian dan dropdown list */}
+        {/* Input Pencarian & Dropdown List – pastikan lebarnya konsisten */}
         {open && (
-          <div className="flex flex-col mt-2">
+          <>
             {/* Baris input pencarian */}
-            <div className="flex">
-              {/* Kolom kosong untuk menyelaraskan dengan label */}
+            <div className="flex mt-1">
               <div className="w-1/4" />
-              <div className="w-3/4">
+              <div className="relative w-3/4">
                 {searchable && (
                   <div className="relative">
-                    <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search..." className="w-full p-2 pl-10 pr-10 border border-gray-300 rounded outline-none" />
-                    <HiOutlineSearch className="absolute text-gray-500 transform -translate-y-1/2 left-3 top-1/2" />
+                    <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="" className="w-full py-1 pl-6 pr-6 text-xs border border-gray-200 rounded focus:outline-none focus:border-green-500" />
+                    {/* Ikon pencarian di kiri */}
+                    <div className="absolute inset-y-0 flex items-center pointer-events-none left-2">
+                      <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M16.65 16.65A7.5 7.5 0 1116.65 2a7.5 7.5 0 010 14.65z" />
+                      </svg>
+                    </div>
+                    {/* Tombol clear (X) di kanan */}
                     {query && (
-                      <button onClick={() => setQuery("")} className="absolute text-gray-500 transform -translate-y-1/2 right-3 top-1/2">
-                        <HiX />
+                      <button onClick={() => setQuery("")} className="absolute inset-y-0 flex items-center justify-center p-1 text-gray-400 border border-gray-300 rounded-full right-2 hover:text-gray-600">
+                        <HiX className="w-3 h-3" />
                       </button>
                     )}
                   </div>
                 )}
               </div>
             </div>
-            {/* Baris dropdown list (tanpa jarak dengan input pencarian) */}
+            {/* Baris dropdown list */}
             <div className="flex">
               <div className="w-1/4" />
               <div className="w-3/4">
                 {optionsToDisplay.length > 0 && (
-                  <div
-                    ref={floating}
-                    // Override posisi agar dropdown mengikuti alur dokumen
-                    style={{ ...style, position: "static" }}
-                    className="z-[1050] w-full bg-white border rounded-md shadow-lg max-h-60 overflow-auto"
-                  >
+                  <div ref={floating} style={{ ...style, position: "static" }} className="w-full border border-gray-200 rounded">
                     <Combobox.Options static>
                       {optionsToDisplay.map((option) => (
-                        <Combobox.Option key={option.value} value={option} as={React.Fragment}>
-                          {({ active, selected }) => <DropdownOption option={option} customRender={customRender} query={query} active={active} selected={selected} />}
-                        </Combobox.Option>
+                        <DropdownOption key={option.value} option={option} query={query} customRender={customRender} />
                       ))}
                     </Combobox.Options>
                   </div>
                 )}
               </div>
             </div>
-          </div>
+          </>
         )}
       </Combobox>
     </div>
