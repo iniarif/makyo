@@ -40,7 +40,7 @@ const Dropdown = ({ options = [], multiple = false, withSearch = true, customRen
 
   const handleSelect = (value) => {
     if (multiple) {
-      setSelected([...selectedItems, value]);
+      setSelected(value);
     } else {
       setSelected(value);
       setOpen(false);
