@@ -52,11 +52,23 @@ const Dropdown = ({ options = [], multiple = false, withSearch = true, customRen
   return (
     <div className={classNames("w-full", className)} ref={containerRef}>
       <Combobox value={selected} onChange={handleSelect} multiple={multiple}>
+        {/* Label */}
         <div className="flex items-center">
           <label className="w-1/4 text-xs font-medium text-gray-700">{label}</label>
+
+          {/* Combobox Trigger / Input */}
           <div className="w-3/4" ref={reference}>
-            <div className="flex items-center w-full p-1 border border-gray-200 rounded-sm cursor-pointer" onClick={() => setOpen(!open)}>
+            <div
+              /* Perhatikan className di sini: */
+              className={classNames(
+                "flex items-center w-full p-1 rounded-sm cursor-pointer transition-colors",
+                // Jika outlined = true, gunakan border & background berbeda
+                outlined ? "border border-gray-300 bg-white hover:border-gray-400" : "border border-gray-200 bg-gray-300 hover:border-gray-300"
+              )}
+              onClick={() => setOpen(!open)}
+            >
               <div className="flex flex-wrap gap-1">
+                {/* Tampilkan item yang terpilih */}
                 {multiple ? (
                   selectedItems.length > 0 &&
                   selectedItems.map((item) => (
@@ -81,6 +93,7 @@ const Dropdown = ({ options = [], multiple = false, withSearch = true, customRen
           </div>
         </div>
 
+        {/* Dropdown list */}
         {open && (
           <>
             {withSearch && (
