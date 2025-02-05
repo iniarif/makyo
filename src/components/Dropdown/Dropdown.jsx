@@ -48,17 +48,8 @@ const Dropdown = ({ options = [], multiple = false, withSearch = true, customRen
   );
   const optionsToDisplay = options;
 
-  // Elemen daftar opsi dropdown (digunakan pada mode portal & non-portal)
   const dropdownOptionsElement = (
-    <div
-      ref={floating}
-      style={
-        portal
-          ? { ...style, position: "absolute", zIndex: 1500 } // mode portal: absolute & z-index tinggi
-          : { ...style, position: "static" } // mode non-portal: gunakan position static sesuai kebutuhan
-      }
-      className="w-full border border-gray-200"
-    >
+    <div ref={floating} style={portal ? { ...style, position: "absolute", zIndex: 1500 } : { ...style, position: "static" }} className="w-full bg-white border border-gray-200 rounded-sm shadow-lg">
       <Combobox.Options static>
         {optionsToDisplay.map((option) => {
           const isSelected = multiple ? selectedItems.some((item) => item.value === option.value) : selectedItems?.value === option.value;
