@@ -28,7 +28,7 @@ export default {
 export const SelectDropdownField = {
   args:{
     id:"sdd-1",
-    withSearch:false,
+    withSearch:true,
     multiple:false,
     outlined:false,
     optionLabel:"label",

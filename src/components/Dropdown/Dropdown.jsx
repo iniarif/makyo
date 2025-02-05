@@ -36,7 +36,7 @@ const Dropdown = ({ options = [], multiple = false, searchable = true, customRen
     }
   };
 
-  // Selalu tampilkan seluruh opsi (tanpa filtering)
+  // Di contoh ini, kita tampilkan saja semua opsi tanpa filtering
   const optionsToDisplay = options;
 
   return (
@@ -72,7 +72,7 @@ const Dropdown = ({ options = [], multiple = false, searchable = true, customRen
           </div>
         </div>
 
-        {/* Input Pencarian & Dropdown List – pastikan lebarnya konsisten */}
+        {/* Input Pencarian & Dropdown List */}
         {open && (
           <>
             {/* Baris input pencarian */}
@@ -90,7 +90,7 @@ const Dropdown = ({ options = [], multiple = false, searchable = true, customRen
                     </div>
                     {/* Tombol clear (X) di kanan */}
                     {query && (
-                      <button onClick={() => setQuery("")} className="absolute flex items-center justify-center w-3 h-3 ml-1 text-white transform -translate-y-1/2 bg-gray-400 rounded-full top-1/2 right-2 hover:bg-gray-500">
+                      <button onClick={() => setQuery("")} className="absolute flex items-center justify-center w-3 h-3 text-white transform -translate-y-1/2 bg-gray-400 rounded-full top-1/2 right-2 hover:bg-gray-500">
                         <HiX className="w-2 h-2" />
                       </button>
                     )}
@@ -98,6 +98,7 @@ const Dropdown = ({ options = [], multiple = false, searchable = true, customRen
                 )}
               </div>
             </div>
+
             {/* Baris dropdown list */}
             <div className="flex">
               <div className="w-1/4" />
@@ -105,9 +106,12 @@ const Dropdown = ({ options = [], multiple = false, searchable = true, customRen
                 {optionsToDisplay.length > 0 && (
                   <div ref={floating} style={{ ...style, position: "static" }} className="w-full border border-gray-200 rounded">
                     <Combobox.Options static>
-                      {optionsToDisplay.map((option) => (
-                        <DropdownOption key={option.value} option={option} query={query} customRender={customRender} />
-                      ))}
+                      {optionsToDisplay.map((option) => {
+                        // Tentukan apakah opsi ini sedang terpilih
+                        const isSelected = multiple ? selectedItems.some((item) => item.value === option.value) : selectedItems?.value === option.value;
+
+                        return <DropdownOption key={option.value} option={option} query={query} customRender={customRender} isSelected={isSelected} />;
+                      })}
                     </Combobox.Options>
                   </div>
                 )}
