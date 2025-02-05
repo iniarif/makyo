@@ -4,14 +4,22 @@ import classNames from "classnames";
 const highlightMatch = (text, query) => {
   if (!query) return text;
   const regex = new RegExp(`(${query})`, "gi");
-  return text.split(regex).map((part, index) =>
-    part.toLowerCase() === query.toLowerCase() ? (
-      <span key={index} className="px-0.5 bg-green-700 text-white rounded">
-        {part}
-      </span>
-    ) : (
-      part
-    )
+
+  // Bagi string sesuai 'query', dan pertahankan query di dalam array (capturing group)
+  const parts = text.split(regex);
+
+  return (
+    <span className="whitespace-pre-wrap">
+      {parts.map((part, index) =>
+        part.toLowerCase() === query.toLowerCase() ? (
+          <span key={index} className="text-white bg-green-700">
+            {part}
+          </span>
+        ) : (
+          part
+        )
+      )}
+    </span>
   );
 };
 
@@ -37,7 +45,7 @@ const DropdownOption = ({ option, customRender, query }) => (
       return classNames(baseClass, "text-gray-700");
     }}
   >
-    {({ active, selected }) => <div className="flex items-center gap-1">{customRender ? customRender(option) : highlightMatch(option.label, query)}</div>}
+    {({ active, selected }) => <div className="flex items-center">{customRender ? customRender(option) : highlightMatch(option.label, query)}</div>}
   </Combobox.Option>
 );
 
