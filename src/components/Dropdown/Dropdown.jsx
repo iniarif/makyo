@@ -53,16 +53,16 @@ const Dropdown = ({ options = [], multiple = false, searchable = true, customRen
                   selectedItems.map((item) => (
                     <span key={item.value} className="inline-flex items-center bg-gray-100 text-xs text-gray-700 rounded-full px-2 py-0.5">
                       {item.label}
-                      <button onClick={(e) => removeItem(e, item.value)} className="flex items-center justify-center p-1 ml-1 border border-gray-300 rounded-full">
-                        <HiX className="w-3 h-3" />
+                      <button onClick={(e) => removeItem(e, item.value)} className="flex items-center justify-center w-3 h-3 ml-1 border border-gray-700 rounded-full">
+                        <HiX className="w-3 h-3 text-gray-500" />
                       </button>
                     </span>
                   ))
                 ) : selectedItems ? (
                   <span className="inline-flex items-center bg-gray-100 text-xs text-gray-700 rounded-full px-2 py-0.5">
                     {selectedItems.label}
-                    <button onClick={clearSelection} className="flex items-center justify-center p-1 ml-1 border border-gray-300 rounded-full">
-                      <HiX className="w-3 h-3" />
+                    <button onClick={clearSelection} className="flex items-center justify-center w-3 h-3 ml-1 border border-gray-700 rounded-full">
+                      <HiX className="w-3 h-3 text-gray-500" />
                     </button>
                   </span>
                 ) : null}
@@ -90,8 +90,8 @@ const Dropdown = ({ options = [], multiple = false, searchable = true, customRen
                     </div>
                     {/* Tombol clear (X) di kanan */}
                     {query && (
-                      <button onClick={() => setQuery("")} className="absolute inset-y-0 flex items-center justify-center p-1 text-gray-400 border border-gray-300 rounded-full right-2 hover:text-gray-600">
-                        <HiX className="w-3 h-3" />
+                      <button onClick={() => setQuery("")} className="absolute flex items-center justify-center w-3 h-3 ml-1 text-white transform -translate-y-1/2 bg-gray-400 rounded-full top-1/2 right-2 hover:bg-gray-500">
+                        <HiX className="w-2 h-2" />
                       </button>
                     )}
                   </div>
