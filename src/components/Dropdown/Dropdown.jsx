@@ -1,4 +1,5 @@
-import React from "react";
+// Dropdown.jsx
+import React, { useRef, useEffect } from "react";
 import { Combobox } from "@headlessui/react";
 import { useDropdown } from "./hooks/useDropdown";
 import DropdownOption from "./DropdownOption";
@@ -8,10 +9,28 @@ import { HiOutlineChevronDown, HiX } from "react-icons/hi";
 const Dropdown = ({ options = [], multiple = false, searchable = true, customRender, onChange, portal = false, className = "", label = "Label", outlined = false }) => {
   const { selected, setSelected, query, setQuery, open, setOpen, floating, reference, style } = useDropdown({ options, multiple, onChange });
 
+  // Buat ref untuk container utama dropdown
+  const containerRef = useRef(null);
+
+  // Hook untuk mendeteksi klik di luar container dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Jika klik terjadi di luar container, tutup dropdown
+      if (containerRef.current && !containerRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [setOpen]);
+
   // Pastikan nilai selected tidak null
   const selectedItems = multiple ? selected || [] : selected;
 
-  // Hapus item pilihan (untuk multiple)
+  // Fungsi untuk menghapus item pilihan (untuk mode multiple)
   const removeItem = (e, itemValue) => {
     e.stopPropagation();
     if (multiple) {
@@ -20,7 +39,7 @@ const Dropdown = ({ options = [], multiple = false, searchable = true, customRen
     }
   };
 
-  // Hapus pilihan (untuk single/multiple)
+  // Fungsi untuk menghapus pilihan (baik untuk single maupun multiple)
   const clearSelection = (e) => {
     e.stopPropagation();
     setSelected(multiple ? [] : null);
@@ -36,11 +55,11 @@ const Dropdown = ({ options = [], multiple = false, searchable = true, customRen
     }
   };
 
-  // Di contoh ini, kita tampilkan saja semua opsi tanpa filtering
+  // Di contoh ini, semua opsi ditampilkan tanpa filtering khusus
   const optionsToDisplay = options;
 
   return (
-    <div className={classNames("w-full", className)}>
+    <div className={classNames("w-full", className)} ref={containerRef}>
       <Combobox value={selected} onChange={handleSelect} multiple={multiple}>
         {/* Baris utama: Label dan Combobox */}
         <div className="flex items-center">
