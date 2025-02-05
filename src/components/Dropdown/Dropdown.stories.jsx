@@ -30,7 +30,7 @@ export const SelectDropdownField = {
     id:"sdd-1",
     withSearch:true,
     multiple:false,
-    outlined:false,
+    outlined:true,
     optionLabel:"label",
     options:[
       { label: "Option 1", value: "1" },
