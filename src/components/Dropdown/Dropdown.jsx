@@ -86,7 +86,7 @@ const Dropdown = ({ options = [], multiple = false, searchable = true, customRen
                   </span>
                 ) : null}
               </div>
-              <HiOutlineChevronDown className="w-3 h-3 ml-auto text-gray-500" />
+              <HiOutlineChevronDown className="w-4 h-4 ml-auto text-gray-500" />
             </div>
           </div>
         </div>
