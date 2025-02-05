@@ -1,53 +1,51 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useCallback } from "react";
 import ReactDOM from "react-dom"; // Import untuk portal support
 import { Combobox } from "@headlessui/react";
 import { useDropdown } from "./hooks/useDropdown";
 import DropdownOption from "./DropdownOption";
 import classNames from "classnames";
 import { HiOutlineChevronDown, HiX } from "react-icons/hi";
+import useOnClickOutside from "./hooks/useOnClickOutside";
 
-const Dropdown = ({ options = [], multiple = false, withSearch = true, customRender, onChange, portal = false, className = "", label = "Label", outlined = false }) => {
+const Dropdown = ({ options = [], multiple = false, withSearch = true, customRender, onChange, portal = false, className = "", label = "Label", outlined = false, optionLabel = "label" }) => {
   const { selected, setSelected, query, setQuery, open, setOpen, floating, reference, style } = useDropdown({ options, multiple, onChange });
 
   const containerRef = useRef(null);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (containerRef.current && !containerRef.current.contains(event.target)) {
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [setOpen]);
+  useOnClickOutside(containerRef, () => setOpen(false));
 
   const selectedItems = multiple ? selected || [] : selected;
 
-  const removeItem = (e, itemValue) => {
-    e.stopPropagation();
-    if (multiple) {
-      const newSelected = selectedItems.filter((s) => s.value !== itemValue);
-      setSelected(newSelected);
-    }
-  };
+  const removeItem = useCallback(
+    (e, itemValue) => {
+      e.stopPropagation();
+      if (multiple) {
+        const newSelected = selectedItems.filter((s) => s.value !== itemValue);
+        setSelected(newSelected);
+      }
+    },
+    [multiple, selectedItems, setSelected]
+  );
 
-  const clearSelection = (e) => {
-    e.stopPropagation();
-    setSelected(multiple ? [] : null);
-  };
+  const clearSelection = useCallback(
+    (e) => {
+      e.stopPropagation();
+      setSelected(multiple ? [] : null);
+    },
+    [multiple, setSelected]
+  );
 
-  const handleSelect = (value) => {
-    if (multiple) {
-      setSelected(value);
-    } else {
-      setSelected(value);
-      setOpen(false);
-    }
-  };
-
+  const handleSelect = useCallback(
+    (value) => {
+      if (multiple) {
+        setSelected(value);
+      } else {
+        setSelected(value);
+        setOpen(false);
+      }
+    },
+    [multiple, setSelected, setOpen]
+  );
   const optionsToDisplay = options;
 
   // Elemen daftar opsi dropdown (digunakan pada mode portal & non-portal)
@@ -64,7 +62,7 @@ const Dropdown = ({ options = [], multiple = false, withSearch = true, customRen
       <Combobox.Options static>
         {optionsToDisplay.map((option) => {
           const isSelected = multiple ? selectedItems.some((item) => item.value === option.value) : selectedItems?.value === option.value;
-          return <DropdownOption key={option.value} option={option} query={query} customRender={customRender} isSelected={isSelected} />;
+          return <DropdownOption key={option.value} option={option} query={query} customRender={customRender} isSelected={isSelected} optionLabel={optionLabel} />;
         })}
       </Combobox.Options>
     </div>
