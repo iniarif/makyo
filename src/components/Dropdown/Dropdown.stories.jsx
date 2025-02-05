@@ -6,10 +6,6 @@ export default {
   argTypes: {
     id: { control: "text", defaultValue: "sdd-1" },
     withSearch: { control: "boolean", defaultValue: true },
-    multiple: { control: "boolean", defaultValue: false },
-    outlined: { control: "boolean", defaultValue: false },
-    optionLabel: { control: "text", defaultValue: "label" },
-    onChange: { action: "changed" },
     options: {
       control: "object",
       defaultValue: [
@@ -21,18 +17,18 @@ export default {
         { label: "Long Long Long Long Long Option 6", value: "6" },
       ],
     },
-    customRender: { control: "boolean", defaultValue: false },
+    multiple: { control: "boolean", defaultValue: false },
+    optionLabel: { control: "text", defaultValue: "label" },
+    onChange: { action: "changed" },
+    outlined: { control: "boolean", defaultValue: false },
   },
 };
 
 export const SelectDropdownField = {
-  args:{
-    id:"sdd-1",
-    withSearch:true,
-    multiple:false,
-    outlined:true,
-    optionLabel:"label",
-    options:[
+  args: {
+    id: "sdd-1",
+    withSearch: true,
+    options: [
       { label: "Option 1", value: "1" },
       { label: "Option with icon", value: "2" },
       { label: "Long Long Option 3", value: "3" },
@@ -40,6 +36,8 @@ export const SelectDropdownField = {
       { label: "Long Long Long Long Option 5", value: "5" },
       { label: "Long Long Long Long Long Option 6", value: "6" },
     ],
-    customRender:false,
+    multiple: false,
+    optionLabel: "arif",
+    outlined: true,
   },
 };
