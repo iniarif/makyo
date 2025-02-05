@@ -29,7 +29,7 @@ const DropdownOption = ({ option, customRender, query }) => (
     // Headless UI akan memanggil fungsi di bawah dg { active, selected, ... }
     className={({ active, selected }) => {
       // Kelas dasar
-      const baseClass = "cursor-pointer select-none px-2 py-1 text-xs";
+      const baseClass = "cursor-pointer select-none px-2 py-2 text-xs";
 
       if (active && selected) {
         // Kondisi jika keduanya true (sedang di-hover & terpilih)
