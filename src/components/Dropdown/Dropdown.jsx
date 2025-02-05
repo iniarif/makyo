@@ -65,7 +65,7 @@ const Dropdown = ({ options = [], multiple = false, searchable = true, customRen
         <div className="flex items-center">
           <label className="w-1/4 text-xs font-medium text-gray-700">{label}</label>
           <div className="w-3/4" ref={reference}>
-            <div className="flex items-center w-full p-1 border border-gray-200 rounded cursor-pointer" onClick={() => setOpen(!open)}>
+            <div className="flex items-center w-full p-1 border border-gray-200 rounded-sm cursor-pointer" onClick={() => setOpen(!open)}>
               <div className="flex flex-wrap gap-1">
                 {multiple ? (
                   selectedItems.length > 0 &&
@@ -100,7 +100,7 @@ const Dropdown = ({ options = [], multiple = false, searchable = true, customRen
               <div className="relative w-3/4">
                 {searchable && (
                   <div className="relative">
-                    <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="" className="w-full py-1 pl-6 pr-6 text-xs border border-gray-200 rounded focus:outline-none focus:border-green-500" />
+                    <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="" className="w-full py-1 pl-6 pr-6 text-xs border border-gray-200 focus:outline-none focus:border-gray-300" />
                     {/* Ikon pencarian di kiri */}
                     <div className="absolute inset-y-0 flex items-center pointer-events-none left-2">
                       <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -123,7 +123,7 @@ const Dropdown = ({ options = [], multiple = false, searchable = true, customRen
               <div className="w-1/4" />
               <div className="w-3/4">
                 {optionsToDisplay.length > 0 && (
-                  <div ref={floating} style={{ ...style, position: "static" }} className="w-full border border-gray-200 rounded">
+                  <div ref={floating} style={{ ...style, position: "static" }} className="w-full border border-gray-200">
                     <Combobox.Options static>
                       {optionsToDisplay.map((option) => {
                         // Tentukan apakah opsi ini sedang terpilih
