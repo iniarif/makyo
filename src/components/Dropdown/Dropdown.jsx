@@ -43,7 +43,7 @@ const Dropdown = ({ options = [], multiple = false, searchable = true, customRen
     <div className={classNames("w-full", className)}>
       <Combobox value={selected} onChange={handleSelect} multiple={multiple}>
         {/* Baris utama: Label dan Combobox */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center">
           <label className="w-1/4 text-xs font-medium text-gray-700">{label}</label>
           <div className="w-3/4" ref={reference}>
             <div className="flex items-center w-full p-1 border border-gray-200 rounded cursor-pointer" onClick={() => setOpen(!open)}>
