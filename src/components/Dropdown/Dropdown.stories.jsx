@@ -21,6 +21,7 @@ export default {
     optionLabel: { control: "text", defaultValue: "label" },
     onChange: { action: "changed" },
     outlined: { control: "boolean", defaultValue: false },
+    portal: { control: "boolean", defaultValue: false },
   },
 };
 
@@ -39,5 +40,6 @@ export const SelectDropdownField = {
     multiple:false,
     optionLabel:"Label",
     outlined:true,
+    portal:false,
   },
 };

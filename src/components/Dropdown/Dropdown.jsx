@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from "react";
+import ReactDOM from "react-dom"; // Import untuk portal support
 import { Combobox } from "@headlessui/react";
 import { useDropdown } from "./hooks/useDropdown";
 import DropdownOption from "./DropdownOption";
@@ -49,6 +50,26 @@ const Dropdown = ({ options = [], multiple = false, withSearch = true, customRen
 
   const optionsToDisplay = options;
 
+  // Elemen daftar opsi dropdown (digunakan pada mode portal & non-portal)
+  const dropdownOptionsElement = (
+    <div
+      ref={floating}
+      style={
+        portal
+          ? { ...style, position: "absolute", zIndex: 1500 } // mode portal: absolute & z-index tinggi
+          : { ...style, position: "static" } // mode non-portal: gunakan position static sesuai kebutuhan
+      }
+      className="w-full border border-gray-200"
+    >
+      <Combobox.Options static>
+        {optionsToDisplay.map((option) => {
+          const isSelected = multiple ? selectedItems.some((item) => item.value === option.value) : selectedItems?.value === option.value;
+          return <DropdownOption key={option.value} option={option} query={query} customRender={customRender} isSelected={isSelected} />;
+        })}
+      </Combobox.Options>
+    </div>
+  );
+
   return (
     <div className={classNames("w-full", className)} ref={containerRef}>
       <Combobox value={selected} onChange={handleSelect} multiple={multiple}>
@@ -59,10 +80,8 @@ const Dropdown = ({ options = [], multiple = false, withSearch = true, customRen
           {/* Combobox Trigger / Input */}
           <div className="w-3/4" ref={reference}>
             <div
-              /* Perhatikan className di sini: */
               className={classNames(
                 "flex items-center w-full p-1 py-2 rounded-sm cursor-pointer transition-colors",
-                // Jika outlined = true, gunakan border & background berbeda
                 outlined ? "border border-gray-300 bg-white hover:border-gray-400" : "border border-gray-200 bg-gray-300 hover:border-gray-300"
               )}
               onClick={() => setOpen(!open)}
@@ -117,22 +136,16 @@ const Dropdown = ({ options = [], multiple = false, withSearch = true, customRen
               </div>
             )}
 
-            <div className="flex">
-              <div className="w-1/4" />
-              <div className="w-3/4">
-                {optionsToDisplay.length > 0 && (
-                  <div ref={floating} style={{ ...style, position: "static" }} className="w-full border border-gray-200">
-                    <Combobox.Options static>
-                      {optionsToDisplay.map((option) => {
-                        const isSelected = multiple ? selectedItems.some((item) => item.value === option.value) : selectedItems?.value === option.value;
-
-                        return <DropdownOption key={option.value} option={option} query={query} customRender={customRender} isSelected={isSelected} />;
-                      })}
-                    </Combobox.Options>
-                  </div>
-                )}
+            {portal ? (
+              // Jika portal = true, render dropdown options ke document.body
+              ReactDOM.createPortal(dropdownOptionsElement, document.body)
+            ) : (
+              // Jika portal = false, render dropdown options secara inline (dengan grid layout)
+              <div className="flex">
+                <div className="w-1/4" />
+                <div className="w-3/4">{dropdownOptionsElement}</div>
               </div>
-            </div>
+            )}
           </>
         )}
       </Combobox>
