@@ -36,7 +36,7 @@ export const SelectDropdownField = {
       { label: "Long Long Long Long Option 5", value: "5" },
       { label: "Long Long Long Long Long Option 6", value: "6" },
     ],
-    multiple:true,
+    multiple:false,
     optionLabel:"Label",
     outlined:true,
   },
